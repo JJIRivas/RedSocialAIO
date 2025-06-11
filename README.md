@@ -8,3 +8,5 @@ Services/WorkManager - Para actividades que se necesiten ejecutar de fondo.
 Estas se deben crear por uno mismo por lo que entiendo y obviamente son aparte de cualquier clase que decidamos crear.
 
 Android studio igualmente ocupa Gradle por si acaso- no Maven (no confundir con MavenCentral igual.)
+
+Actualmente esta implementada las dependencias de Misskey y Mastodon con las API de Kmisskey y BigBone respectivamente.
