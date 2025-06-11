@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -32,13 +34,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Test!", Snackbar.LENGTH_LONG).show();
-                Intent intent = new Intent(MainActivity.this, AccountCreation.class);
-                startActivity(intent);
 
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, AccountLogin.class));
             }
         });
+
+        TextView create = findViewById(R.id.createAccountButton);
+        create.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, AccountCreation.class));
+        });
+        TextView recover = findViewById(R.id.resetPasswordButton);
+        recover.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, AccountRecovery.class));
+        });
+
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;

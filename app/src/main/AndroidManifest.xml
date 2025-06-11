@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AccountCreation" />
+        <activity android:name=".AccountRecovery" />
+        <activity android:name=".AccountLogin" />
     </application>
 
 </manifest>

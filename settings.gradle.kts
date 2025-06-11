@@ -16,6 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        }
+        maven {
+            url = uri("https://repo.repsy.io/mvn/uakihir0/public")
+        }
     }
 }
 

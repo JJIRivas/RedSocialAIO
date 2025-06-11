@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 public class AccountCreation extends AppCompatActivity {
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     private EditText createMail, createPassword;
     private TextView createAccount;
 
