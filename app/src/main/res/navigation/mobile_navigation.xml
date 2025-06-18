@@ -22,4 +22,10 @@
         android:name="com.example.redsocialaio.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_mastodon"
+        android:name="com.example.redsocialaio.MastodonFragment"
+        android:label="Mastodon"
+        tools:layout="@layout/fragment_mastodon" />
 </navigation>

@@ -56,4 +56,6 @@ dependencies {
     implementation(libs.bigbone.rx)
     implementation("work.socialhub.kmisskey:core:0.0.1-SNAPSHOT")
     implementation("work.socialhub.kmisskey:stream:0.0.1-SNAPSHOT")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }
