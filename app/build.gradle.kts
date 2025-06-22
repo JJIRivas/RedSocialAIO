@@ -53,7 +53,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.bigbone)
-    implementation(libs.bigbone.rx)
-    implementation("work.socialhub.kmisskey:core:0.0.1-SNAPSHOT")
-    implementation("work.socialhub.kmisskey:stream:0.0.1-SNAPSHOT")
+    implementation(libs.security.crypto)
+    implementation(libs.okhttp)
 }

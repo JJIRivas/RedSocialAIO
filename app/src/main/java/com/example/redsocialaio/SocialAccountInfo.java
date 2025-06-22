@@ -2,18 +2,15 @@ package com.example.redsocialaio;
 
 import java.util.Map;
 
-public interface CuentaUsuarioRedSocial {
+public interface SocialAccountInfo {
     String getUserName();
-
-    String getAccessToken();
-
     String getUserID();
 
-    boolean IsConnected();
+    boolean IsPrivate();
 
-    void connect();
+    void connect(String authCode);
 
-    void disconnect();
+    void disconnect(String authCode);
 
     Map<String, Object> toFirestoreData();
 

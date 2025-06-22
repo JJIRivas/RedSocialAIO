@@ -22,9 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccountCreation" />
-        <activity android:name=".AccountRecovery" />
-        <activity android:name=".AccountLogin" />
+        <activity android:name=".FirebaseAuthStuff.AccountCreation" />
+        <activity android:name=".FirebaseAuthStuff.AccountRecovery" />
+        <activity android:name=".FirebaseAuthStuff.AccountLogin" />
+        <activity android:name=".misskey.MisskeyInstanceInput" />
     </application>
 
 </manifest>

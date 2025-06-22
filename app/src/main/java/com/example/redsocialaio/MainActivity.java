@@ -2,12 +2,15 @@ package com.example.redsocialaio;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.redsocialaio.FirebaseAuthStuff.AccountCreation;
+import com.example.redsocialaio.FirebaseAuthStuff.AccountLogin;
+import com.example.redsocialaio.FirebaseAuthStuff.AccountRecovery;
+import com.example.redsocialaio.firebaseFirestore.FirestoreTest;
+import com.example.redsocialaio.misskey.MisskeyInstanceInput;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -27,18 +30,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirestoreTest firestoreTest = new FirestoreTest();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AccountLogin.class));
-            }
-        });
+        binding.appBarMain.fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AccountLogin.class)));
 
         TextView create = findViewById(R.id.createAccountButton);
         create.setOnClickListener(v -> {
@@ -47,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         TextView recover = findViewById(R.id.resetPasswordButton);
         recover.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, AccountRecovery.class));
+        });
+
+        Button button = findViewById(R.id.buttonToAskInstance);
+        button.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, MisskeyInstanceInput.class));
         });
 
 

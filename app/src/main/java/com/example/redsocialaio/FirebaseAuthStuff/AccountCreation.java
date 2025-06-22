@@ -1,4 +1,4 @@
-package com.example.redsocialaio;
+package com.example.redsocialaio.FirebaseAuthStuff;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.redsocialaio.MainActivity;
+import com.example.redsocialaio.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
