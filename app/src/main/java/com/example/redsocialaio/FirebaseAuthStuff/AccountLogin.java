@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+//Clase simple que se encarga de iniciar sesion en firebaseAuth.
 public class AccountLogin extends AppCompatActivity {
 
     private FirebaseAuth mAuth;

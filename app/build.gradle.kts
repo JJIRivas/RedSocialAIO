@@ -55,4 +55,5 @@ dependencies {
     implementation(libs.bigbone)
     implementation(libs.security.crypto)
     implementation(libs.okhttp)
+    implementation(libs.datastore.preferences)
 }

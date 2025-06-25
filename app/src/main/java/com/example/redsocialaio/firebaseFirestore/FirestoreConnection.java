@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+//Podria ocuparse para la refraccion de MisskeyAccount? revisar.
 public class FirestoreConnection {
 
     private String mastodonUserName;

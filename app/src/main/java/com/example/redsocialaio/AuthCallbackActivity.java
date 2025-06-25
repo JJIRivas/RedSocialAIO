@@ -15,6 +15,8 @@ import social.bigbone.api.Scope;
 import com.example.redsocialaio.mastodon.MastodonAccount;
 import com.example.redsocialaio.mastodon.MastodonInstanceCreator;
 
+/*Clase no ocupada. Hecha cuando se inicio el proyecto... no la borro porque no me he dado el
+trabajo de revisarla de nuevo y ver que hacia o si es que sirve de algo para despues.*/
 public class AuthCallbackActivity extends AppCompatActivity {
     public AuthCallbackActivity() {
     }

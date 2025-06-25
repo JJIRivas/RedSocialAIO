@@ -1,0 +1,69 @@
+Dejo este texto para documentar de manera general la estructura que sigue lo presente en la carpeta de Misskey.
+
+Nota: Algunas clases no estan implementadas/compeltas todavia. Igualmente hay clases que comparten o tienen mas de una responsabilidad, por lo que se debe limpiar el codigo idealmente.
+Tambien- todavia no esta implementado el cifrado de Tokens; ESTOS IGUAL TAMPOCO SE DEBERIAN GUARDAR EN FIRESTORE POR POSIBLE INTERCEPCION DE DATOS, el codigo actual en Misskey por error
+si lo hace, por lo que se *DEBE* cambiar pronto a un cifrado local (tiene que ser cifrado igual, o si no cualquier usuario con Root podria acceder a los archivos del telefono y obtener
+los Tokens).
+
+de todas formas... lo primero que aclarar es que aunque el usuario pueda clickear el boton morado en la pantalla de inicio de sesion para iniciar lo relacionado a misskey, ese boton solo
+esta para probar la funcionalidad ya que si se inicia sesion sin antes iniciar sesion en firebaseAuth (las credenciales basicas que pide la app), entonces toda la informacion obtenida
+de misskey sera perdida luego de que termine el proceso.
+
+Actualmente el usuario al apretar el boton ve una caja de texto en donde debe ingresar la URL de la instancia que quiere ocupar, esto es hecho con MisskeyInstanceInput y
+activity_misskey_ask_instance.xml y MisskeyInstanceValidator. Se envia el URL de la instancia a MisskeyInstanceValidator para que este se encarge de revisar si es valida o no, esto se
+hace mediante el endpoint de "/meta" en Misskey.
+
+Nota: Misskey y las redes federadas en general en teoria podrian tener endpoints diferentes segun instancia... pero en practica la mayoria siguen los endpoints de la instancia base, pero
+igual vale la pena considerar que entre instancias puede haber algo raro en una de esas. (A lo que me refiero, puede que por ejemplo los endpoints de algo como Misskey.social y Misskey.io
+sean diferentes- aunque no lo son, pero en teoria *podrian* serlo).... ah, y las instancias base para Mastodon y Misskey son Mastodon.social y Misskey.io respectivamente, ahora mismo
+Misskey.io esta restringida a usuarios de Japon solamente si, por ende para motivos de debugging ocupare Misskey.social para pruebas- ahi tengo una cuenta llamada apitesting que cree para
+esto mismo- sugiero hacer lo mismo para Mastodon.
+
+El endpoint /meta deberia retornar informacion general de la instancia- si es que lo que retorna no es algo como Null o algo que no es JSON, entonces asumimos que la instancia existe y
+seguimos.
+
+Con una instancia valida, iniciamos la clase MisskeyAuthManager, la cual llamamos para generar un Token UUID y la URL para que el usuario pueda iniciar sesion como tal en la red.
+
+Nota: Misskey sigue un proceso un poco distinto a la verificacion por OAuth general, el cual llamaron MiAuth... personalmente creo que es mas facil- pero a lo que voy, para iniciar sesion
+se deben considerar 2 Tokens, uno que es el Token del usuario como tal (el que esta asociado a la cuenta y da acceso a esta) y otro que es un token de 1 solo uso y temporal para cada
+sesion, este se denomina UUID o "Session ID" en la API (aunque actualmente tengo nombres un poco intercambiables para los dos en el codigo- pero especifico con comentarios cual es cual).
+
+Ya que los UUID son algo conocido, android tiene una funcion para generarlos de manera aleatoria, y esa ocupamos para armar la URL que ocupara el usuario para iniciar sesion, el cual
+es de forma https://{host}/miauth/{session}" (donde {host} es el URL de la instancia y {session} es el UUID). Se agregaron otras cosas igual, como el url a que regresar una vez listo,
+el nombre de la app que esta pidiendo las cosas, y los permisos que pide la app.
+
+Una vez que se tiene la URL y se retorna, se crea un Intent en MisskeyInstanceInput que abre el navegador web del usuario para que inicie sesion en la instancia- asi nos evitamos ocupar
+algo como WebView y pasamos la responsabilidad de inicio de sesion a la plataforma en si.
+
+Luego que el usuario termine eso, se retorna a la clase MisskeyCallbackActivity- esto es posible por tres motivos. Primero, se definio un String en MisskeyAuthManager que tiene de valor
+"redsocialaio://misskey/callback", y lo segundo fue añadir el parametro "callback a la url", el tercero fue añadir esto en el archivo AndroidManifest.xml:
+
+        <activity android:name=".misskey.MisskeyCallbackActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="redsocialaio" android:host="misskey" android:path="/callback" />
+            </intent-filter>
+        </activity>
+
+Lo que basicamente dice que la clase MisskeyCallbackActivity tiene como un alias a "redsocialaio://misskey/callback", entonces si se fuera a llamar de alguna forma a este URL, va a
+redireccionar a la clase en si (por eso se especifico como atributo en el URL anterior igual).
+
+En MisskeyCallbackActivity se guardan la URL de la instancia y el UUID con SharedPreferences- para luego iniciar el proceso de obtener el Token real con checkMiAuthSession() de
+MisskeyAuthManager, el cual ocupa el endpoint "/check" para verificar si el inicio de sesion fue exitoso y para recibir el Token real.
+
+Con este Token real, nos devolvemos a MisskeyCallbackActivity el cual crea un objeto de ObtainMisskeyUserInfo para luego pasar los datos de la cuenta a la clase MisskeyAccount.
+
+ObtainMisskeyUserInfo ocupa el endpoint "/i" para recibir la info del usuario, necesita llamar a la instancia que el usuario pertenece y enviar el token real para obtener la informacion.
+
+Una vez con la informacion en MisskeyAccount, la asignamos a las variables presentes en esta clase y creamos un HashMap para enviar esos datos a Firestore.
+
+Nota: lo menciono en los comentarios harto, pero Firestore solo trabaja con HashMap.
+
+Hasta ahi es el codigo completo.... de manera basica se sigue este orden:
+
+MisskeyInstanceInput() -> MisskeyInstanceValidator() -> MisskeyInstanceInput() ->MisskeyAuthManager().startSession() -> MisskeyAuthManager.generateAuthUrl() -> MisskeyInstanceInput() ->
+Pagina web -> MisskeyCallbackActivity() -> MisskeyAuthManager().setSessionToken() -> MisskeyAuthManager().checkMiAuthSession() -> ObtainMisskeyUserInfo.fetchUserInfo() -> misskeyAccount.setAccessToken(token)
+-> misskeyAccount.fromJSONObject() -> misskeyAccount.toFirestoreMap() -> misskeyAccount.saveToFirestore() -> MisskeyCallbackActivity() -> MainActivity()

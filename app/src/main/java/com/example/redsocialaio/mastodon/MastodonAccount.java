@@ -6,6 +6,9 @@ import com.example.redsocialaio.TokenizedAccount;
 import java.util.Collections;
 import java.util.Map;
 
+
+/*Nuevamente, interfaz creada al principio del proyecto, fue hecha antes de pasar la responsabilidad
+de Mastodon a el Mati. La dejo "por si caso".*/
 public class MastodonAccount implements TokenizedAccount, SocialAccountInfo {
     @Override
     public String getUserName() {

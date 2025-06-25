@@ -19,6 +19,8 @@ import social.bigbone.MastodonClient;
 import social.bigbone.api.Scope;
 import social.bigbone.api.entity.Instance;
 
+/*Clase hecha al principio del proyecto... se encargaba de manejar tokens de manera segura.
+Todavia podria ser ocupada, pero necesitaria un rework grande.*/
 public class TokenManager extends AppCompatActivity implements TokenizedAccount {
 
     public TokenManager() {

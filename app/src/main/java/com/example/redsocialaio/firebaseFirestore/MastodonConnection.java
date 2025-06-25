@@ -9,6 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/*Clase hecha al principio del proyecto- debia guardar datos de Mastodon en firestore.... nose
+que tan bien escrita esta.*/
 public class MastodonConnection {
 
     private final FirebaseFirestore db;

@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+//Clase simple que se encarga de crear una cuenta en FirebaseAuth.
 public class AccountCreation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText createMail, createPassword;

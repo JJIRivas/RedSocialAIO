@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+//clase simple que se encarga de restaurar la cuenta si es que el usuario se le olvida la contraseña de firebaseAuth.
 public class AccountRecovery extends AppCompatActivity {
     private TextView confirmSendCode;
     private EditText emailForRecovery;
