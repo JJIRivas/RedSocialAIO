@@ -25,6 +25,9 @@
         <activity android:name=".AccountCreation" />
         <activity android:name=".AccountRecovery" />
         <activity android:name=".AccountLogin" />
+        <activity android:name=".PermissionsActivity"/>
+        <activity android:name=".SelectInstances"/>
+
     </application>
 
 </manifest>

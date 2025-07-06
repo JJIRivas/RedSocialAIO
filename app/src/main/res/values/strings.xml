@@ -10,4 +10,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="selecciona_las_instancias_que_deseas_usar">Selecciona las instancias que deseas usar</string>
+    <string name="misskey">Misskey</string>
 </resources>
