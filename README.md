@@ -1,16 +1,8 @@
-# RedSocialAIO - App de Red Social
 
-Es una aplicación que se conecta a Mastodon (como Twitter pero descentralizado) para:
 - Ver posts públicos de otras personas
 - Publicar tus propios posts
 - Dar likes y hacer reblogs
 - Seguir a otros usuarios
-
-
-### Carpetas principales:
-- `app/src/main/java/` - Aquí está todo el código de la app
-- `app/src/main/res/layout/` - Aquí están los diseños de las pantallas (XML)
-- `app/src/main/res/values/` - Colores, textos y configuraciones
 
 ### Clases importantes:
 
@@ -41,11 +33,6 @@ Es una aplicación que se conecta a Mastodon (como Twitter pero descentralizado)
 - Mi Perfil: muestra información del usuario (avatar, nombre, biografía, estadísticas)
 - Cerrar Sesión: salir de la app
 
-**Posts con mejor diseño**:
-- Cada post está en una "tarjeta" (card) con bordes redondeados
-- Se ve más moderno y fácil de leer
-- Muestra avatar, nombre, contenido y botones de like/reblog
-
 **Actualización automática**:
 - Cuando se publica algo, automáticamente se actualiza la lista
 
@@ -58,11 +45,6 @@ Es una aplicación que se conecta a Mastodon (como Twitter pero descentralizado)
 ### Tecnologías usadas:
 - **Retrofit**: Para conectarse a internet y traer datos
 - **Glide**: Para cargar las fotos de perfil
-- **RecyclerView**: Para mostrar listas largas de posts
 
-### API de Mastodon:
-- Se uso la API oficial de Mastodon
-- Nos conectamos principalmente a mastodon.social (Una URL de instancia)
-- BigBone es una librería que facilita el uso (aunque no se uso de forma directa)
 
 
