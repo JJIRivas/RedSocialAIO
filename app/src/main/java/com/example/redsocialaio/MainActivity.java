@@ -6,11 +6,11 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.redsocialaio.FirebaseAuthStuff.AccountCreation;
-import com.example.redsocialaio.FirebaseAuthStuff.AccountLogin;
-import com.example.redsocialaio.FirebaseAuthStuff.AccountRecovery;
-import com.example.redsocialaio.firebaseFirestore.FirestoreTest;
-import com.example.redsocialaio.misskey.MisskeyInstanceInput;
+import com.example.redsocialaio.firebase.auth.AccountCreation;
+import com.example.redsocialaio.firebase.auth.AccountLogin;
+import com.example.redsocialaio.firebase.auth.AccountRecovery;
+import com.example.redsocialaio.misskey.validation.MisskeyInstanceInput;
+import com.example.redsocialaio.ui.MissUI;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -30,12 +30,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirestoreTest firestoreTest = new FirestoreTest();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarMain.toolbar);
+//        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AccountLogin.class)));
 
         TextView create = findViewById(R.id.createAccountButton);
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView recover = findViewById(R.id.resetPasswordButton);
         recover.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AccountRecovery.class));
+            startActivity(new Intent(MainActivity.this, MissUI.class));
         });
 
         Button button = findViewById(R.id.buttonToAskInstance);

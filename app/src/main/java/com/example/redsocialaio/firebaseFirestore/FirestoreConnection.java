@@ -1,80 +1,42 @@
 package com.example.redsocialaio.firebaseFirestore;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-//Podria ocuparse para la refraccion de MisskeyAccount? revisar.
-public class FirestoreConnection {
-
-    private String mastodonUserName;
-    private String mastodonAccessToken;
-    private String mastodonServerDomain;
-
-    private String misskeyUserName;
-    private String misskeyAccessToken;
-    private String misskeyServerDomain;
-
-    public FirestoreConnection() {
-    }
-
-    public FirestoreConnection(String mastodonUserName, String mastodonAccessToken,
-                               String mastodonServerDomain, String misskeyUserName,
-                               String misskeyAccessToken, String misskeyServerDomain) {
-        this.mastodonUserName = mastodonUserName;
-        this.mastodonAccessToken = mastodonAccessToken;
-        this.mastodonServerDomain = mastodonServerDomain;
-        this.misskeyUserName = misskeyUserName;
-        this.misskeyAccessToken = misskeyAccessToken;
-        this.misskeyServerDomain = misskeyServerDomain;
-    }
-
-    public String getMastodonUserName() {
-        return mastodonUserName;
-    }
-
-    public String getMastodonAccessToken() {
-        return mastodonAccessToken;
-    }
-
-    public String getMastodonServerDomain() {
-        return mastodonServerDomain;
-    }
-
-    public void setMastodonUserName(String mastodonUserName) {
-        this.mastodonUserName = mastodonUserName;
-    }
-
-    public void setMastodonAccessToken(String mastodonAccessToken) {
-        this.mastodonAccessToken = mastodonAccessToken;
-    }
-
-    public void setMastodonServerDomain(String mastodonServerDomain) {
-        this.mastodonServerDomain = mastodonServerDomain;
-    }
-
-    public String getMisskeyUserName() {
-        return misskeyUserName;
-    }
-
-    public String getMisskeyAccessToken() {
-        return misskeyAccessToken;
-    }
-
-    public String getMisskeyServerDomain() {
-        return misskeyServerDomain;
-    }
-
-    public void setMisskeyUserName(String misskeyUserName) {
-        this.misskeyUserName = misskeyUserName;
-    }
-
-    public void setMisskeyAccessToken(String misskeyAccessToken) {
-        this.misskeyAccessToken = misskeyAccessToken;
-    }
-
-    public void setMisskeyServerDomain(String misskeyServerDomain) {
-        this.misskeyServerDomain = misskeyServerDomain;
-    }
-
-}
+//
+//public abstract class FirestoreConnection {
+//
+//    public static void loadFromFirestore(String firebaseUid, LoadCallback callback) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("users")
+//                .document(firebaseUid)
+//                .collection("accounts")
+//                .document("misskey")
+//                .get()
+//                .addOnSuccessListener(documentSnapshot -> {
+//                    if (documentSnapshot.exists()) {
+//
+//                        /*Si sabemos que existe la informacion del usuario, se crea un nuevo
+//                        objeto de la clase MisskeyAccount y enviamos la informacion a el metodo
+//                        fromFirestoreMap para guardarla en sus variables.*/
+//
+//                        /*Idealmente, esto se podria refactorizar a una clase diferente para que
+//                        MisskeyAccount solo se ocupe de representar las cuentas como tal en vez de
+//                        tener que cargar datos igual.*/
+//
+//                        MisskeyAccount account = new MisskeyAccount();
+//                        Map<String, Object> data = documentSnapshot.getData();
+//                        if (data != null) {
+//                            account.fromFirestoreMap(data);
+//                            callback.onSuccess(account);
+//                        } else {
+//                            callback.onFailure("Datos vacíos");
+//                        }
+//                    } else {
+//                        callback.onFailure("No hay cuenta de Misskey guardada");
+//                    }
+//                })
+//                .addOnFailureListener(e -> {
+//                    callback.onFailure("Error al leer Firestore: " + e.getMessage());
+//                });
+//    }
+//
+//
+//}
