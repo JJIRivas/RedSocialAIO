@@ -57,4 +57,7 @@ dependencies {
     implementation(libs.security.crypto)
     implementation(libs.okhttp)
     implementation(libs.datastore.preferences)
+    implementation(libs.swiperefreshlayout)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 }

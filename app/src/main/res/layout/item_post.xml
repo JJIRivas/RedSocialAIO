@@ -18,6 +18,7 @@
             android:gravity="center_vertical">
 
             <ImageView
+                android:id="@+id/userAvatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_profile"
@@ -81,34 +82,77 @@
             android:weightSum="5">
 
             <ImageView
+                android:id="@+id/likeButton"
                 android:src="@drawable/ic_like"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:id="@+id/likeCount"
+                android:text="0"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:id="@+id/replyButton"
                 android:src="@drawable/ic_reply"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:id="@+id/replyCount"
+                android:text="0"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:id="@+id/repostButton"
                 android:src="@drawable/ic_repost"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:id="@+id/repostCount"
+                android:text="0"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:id="@+id/bookmarkButton"
                 android:src="@drawable/ic_bookmark"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:id="@+id/bookmarkCount"
+                android:text="0"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:id="@+id/moreButton"
                 android:src="@drawable/ic_more"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
