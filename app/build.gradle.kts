@@ -37,19 +37,36 @@ android {
 
 dependencies {
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.constraintlayout)
-    implementation(libs.lifecycle.livedata.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.credentials)
-    implementation(libs.credentials.play.services.auth)
-    implementation(libs.googleid)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // Core Android UI components
+    implementation(libs.appcompat)           // Compatibilidad con versiones anteriores
+    implementation(libs.material)            // Material Design components
+    implementation(libs.constraintlayout)    // Layout flexible y eficiente
+    
+    // Architecture Components - MVVM Pattern
+    implementation(libs.lifecycle.livedata.ktx)  // LiveData para observar cambios de datos
+    implementation(libs.lifecycle.viewmodel.ktx) // ViewModel para manejar UI data
+    
+    // Navigation Component
+    implementation(libs.navigation.fragment) // Navegación entre fragments
+    implementation(libs.navigation.ui)       // UI helpers para navegación
+    
+    // Firebase - Authentication & Backend
+    implementation(platform(libs.firebase.bom))        // Firebase Bill of Materials
+    implementation(libs.firebase.auth)                 // Autenticación Firebase
+    implementation(libs.credentials)                   // Credential Manager API
+    implementation(libs.credentials.play.services.auth) // Google Sign-In integration
+    implementation(libs.googleid)                      // Google ID token verification
+    
+    // Networking - Para APIs de redes sociales (Mastodon/BigBone)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")         // HTTP client
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")   // JSON parsing
+    
+    // Image Loading - Para avatares y media content
+    implementation("com.github.bumptech.glide:glide:4.16.0")        // Carga y cache de imágenes
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0") // Glide annotation processor
+    
+    // Testing
+    testImplementation(libs.junit)           // Unit testing
+    androidTestImplementation(libs.ext.junit) // Android unit testing
+    androidTestImplementation(libs.espresso.core) // UI testing
 }
