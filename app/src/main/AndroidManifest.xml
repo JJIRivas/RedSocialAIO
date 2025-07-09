@@ -40,6 +40,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.Unified.UnifiedTimeline" />
+        <activity android:name=".mastodon.MastodonCallbackActivity" />
+        <activity android:name=".core.checkers.InstancePickerActivity" />
+        <activity android:name=".core.checkers.InstanceValidation" />
         <activity android:name=".ui.MissUI" />
         <activity android:name=".firebase.auth.AccountCreation" />
         <activity android:name=".firebase.auth.AccountRecovery" />

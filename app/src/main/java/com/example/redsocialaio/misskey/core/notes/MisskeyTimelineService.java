@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import okhttp3.*;
@@ -42,80 +43,37 @@ public class MisskeyTimelineService {
      */
     public CompletableFuture<List<MisskeyNoteTimeline>> getHomeTimeline(TimelineRequest request) {
         CompletableFuture<List<MisskeyNoteTimeline>> future = new CompletableFuture<>();
-
-        // Obtener cuenta e info
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user == null) {
-            future.completeExceptionally(new Exception("No autenticado"));
-            return future;
+            return failFuture(future, "No autenticado");
         }
 
         accountService.getAccountWithToken(user.getUid())
                 .addOnSuccessListener(result -> {
                     try {
-                        // Crear request body con todos los parámetros posibles
-                        JSONObject body = new JSONObject();
-                        body.put("i", result.getToken());
-                        body.put("limit", request.limit);
+                        JSONObject body = buildRequestBody(request, result.getToken());
 
-                        // Parámetros opcionales para paginación
-                        if (request.sinceId != null) {
-                            body.put("sinceId", request.sinceId);
-                        }
-                        if (request.untilId != null) {
-                            body.put("untilId", request.untilId);
-                        }
-                        if (request.sinceDate > 0) {
-                            body.put("sinceDate", request.sinceDate);
-                        }
-                        if (request.untilDate > 0) {
-                            body.put("untilDate", request.untilDate);
-                        }
-
-                        // Canal específico
-                        if (request.channelId != null) body.put("channelId", request.channelId);
-
-                        // Permitir respuestas parciales
-                        body.put("allowPartial", request.allowPartial);
-
-                        Log.d("MisskeyTimelineService", "Token: " + result.getToken());
-                        Log.d("MisskeyTimelineService", "Instance: " + result.getInstanceUrl());
-
-
+                        String url = "https://" + result.getInstanceUrl() + "/api/notes/local-timeline";
                         Request httpRequest = new Request.Builder()
-                                .url("https://" + result.getInstanceUrl() + "/api/notes/local-timeline")
+                                .url(url)
                                 .post(RequestBody.create(body.toString(), JSON))
                                 .build();
 
+                        Log.d("MisskeyTimelineService", "Token: " + result.getToken());
+                        Log.d("MisskeyTimelineService", "Instance: " + result.getInstanceUrl());
                         Log.d("MisskeyTimelineService", "Request: " + body);
-                        // Ejecutar
+
                         client.newCall(httpRequest).enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                Log.d("TIMELINEREQUEST", "ERROR GETTING TIMELINE");
+                                Log.e("TIMELINEREQUEST", "ERROR GETTING TIMELINE", e);
                                 future.completeExceptionally(e);
                             }
 
                             @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                try {
-                                    String responseBody = response.body().string();
-                                    JSONArray notesArray = new JSONArray(responseBody);
-
-                                    Log.d("MisskeyTimelineService", "HTTP Response: " + response.code());
-                                    Log.d("MisskeyTimelineService", "Body: " + responseBody);
-
-                                    List<MisskeyNoteTimeline> notes = new ArrayList<>();
-                                    for (int i = 0; i < notesArray.length(); i++) {
-                                        JSONObject noteJson = notesArray.getJSONObject(i);
-                                        notes.add(MisskeyNoteTimeline.fromJSON(noteJson));
-                                    }
-
-                                    future.complete(notes);
-
-                                } catch (Exception e) {
-                                    future.completeExceptionally(e);
-                                }
+                            public void onResponse(Call call, Response response) {
+                                handleTimelineResponse(response, future);
                             }
                         });
 
@@ -128,16 +86,63 @@ public class MisskeyTimelineService {
         return future;
     }
 
+
+    private CompletableFuture<List<MisskeyNoteTimeline>> failFuture(CompletableFuture<List<MisskeyNoteTimeline>> future, String message) {
+        future.completeExceptionally(new Exception(message));
+        return future;
+    }
+
+    private JSONObject buildRequestBody(TimelineRequest request, String token) throws JSONException {
+        JSONObject body = new JSONObject();
+        body.put("i", token);
+        body.put("limit", request.limit);
+
+        if (request.sinceId != null) body.put("sinceId", request.sinceId);
+        if (request.untilId != null) body.put("untilId", request.untilId);
+        if (request.sinceDate > 0) body.put("sinceDate", request.sinceDate);
+        if (request.untilDate > 0) body.put("untilDate", request.untilDate);
+        if (request.channelId != null) body.put("channelId", request.channelId);
+
+        body.put("allowPartial", request.allowPartial);
+        return body;
+    }
+
+    private void handleTimelineResponse(Response response, CompletableFuture<List<MisskeyNoteTimeline>> future) {
+        try (ResponseBody responseBody = response.body()) {
+            if (responseBody == null) {
+                future.completeExceptionally(new IOException("Cuerpo de respuesta nulo"));
+                return;
+            }
+
+            String json = responseBody.string();
+            Log.d("MisskeyTimelineService", "HTTP Response: " + response.code());
+            Log.d("MisskeyTimelineService", "Body: " + json);
+
+            JSONArray notesArray = new JSONArray(json);
+            List<MisskeyNoteTimeline> notes = new ArrayList<>();
+
+            for (int i = 0; i < notesArray.length(); i++) {
+                notes.add(MisskeyNoteTimeline.fromJSON(notesArray.getJSONObject(i)));
+            }
+
+            future.complete(notes);
+
+        } catch (Exception e) {
+            future.completeExceptionally(e);
+        }
+    }
+
+
     /**
      * Clase para parámetros del timeline
      */
     public static class TimelineRequest {
         public String channelId = null;
         public int limit = 20;
-        public String sinceId = null;  // Para obtener posts más nuevos que este ID
-        public String untilId = null;  // Para obtener posts más viejos que este ID (paginación)
-        public long sinceDate = 0;     // Unix timestamp en milisegundos
-        public long untilDate = 0;     // Unix timestamp en milisegundos
+        public String sinceId = null;
+        public String untilId = null;
+        public long sinceDate = 0;
+        public long untilDate = 0;
         public boolean allowPartial = false;
 
         // Builder pattern para construcción fácil

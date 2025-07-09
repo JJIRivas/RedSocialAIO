@@ -1,5 +1,7 @@
 package com.example.redsocialaio.misskey.core.notes;
 
+import android.util.Log;
+
 import com.example.redsocialaio.misskey.conversion.MisskeyAccountMapper;
 import com.example.redsocialaio.misskey.core.MisskeyAccount;
 
@@ -21,7 +23,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class MisskeyNoteTimeline extends MisskeyNoteBase {
-    // INFO DEL AUTOR (completa para mostrar)
+
     private MisskeyAccount user;
     private String channelId;
     private int limit;
@@ -74,81 +76,95 @@ public class MisskeyNoteTimeline extends MisskeyNoteBase {
     public static MisskeyNoteTimeline fromJSON(JSONObject json) throws JSONException {
         MisskeyNoteTimeline note = new MisskeyNoteTimeline();
 
-        // Campos básicos
+        parseBasicFields(json, note);
+        parseUser(json, note);
+        parseFiles(json, note);
+        parseReactions(json, note);
+        parseCustomEmojis(json, note);
+        parseRenote(json, note);
+        parseTags(json, note);
+
+        return note;
+    }
+
+    private static void parseBasicFields(JSONObject json, MisskeyNoteTimeline note) throws JSONException {
         note.id = json.getString("id");
         note.userId = json.getString("userId");
         note.text = json.optString("text", "");
         note.cw = json.optString("cw", null);
+        note.createdAt = parseDate(json.getString("createdAt"));
+        note.visibility = Visibility.fromApiValue(json.optString("visibility", "public"));
 
-        // Parsear fecha
-        String createdAtStr = json.getString("createdAt");
-        note.createdAt = parseDate(createdAtStr);
+        note.repliesCount = json.optInt("repliesCount", 0);
+        note.renoteCount = json.optInt("renoteCount", 0);
+        note.myReaction = json.optString("myReaction", null);
+        note.isRenoted = json.optBoolean("isRenoted", false);
 
-        // Visibilidad
-        String visibilityStr = json.optString("visibility", "public");
-        note.visibility = Visibility.fromApiValue(visibilityStr);
+        Log.d("MisskeyParse", "Parseando note ID: " + note.id);
+        Log.d("MisskeyParse", "Text: " + note.text);
+    }
 
-        // Usuario
+    private static void parseUser(JSONObject json, MisskeyNoteTimeline note) {
         JSONObject userJson = json.optJSONObject("user");
         if (userJson != null) {
             note.user = MisskeyAccountMapper.fromJSON(userJson);
         }
+    }
 
-        // Estadísticas
-        note.repliesCount = json.optInt("repliesCount", 0);
-        note.renoteCount = json.optInt("renoteCount", 0);
-
-        // Archivos
+    private static void parseFiles(JSONObject json, MisskeyNoteTimeline note) throws JSONException {
         JSONArray filesArray = json.optJSONArray("files");
         if (filesArray != null) {
             for (int i = 0; i < filesArray.length(); i++) {
-                JSONObject fileJson = filesArray.getJSONObject(i);
-                note.files.add(MisskeyFile.fromJSON(fileJson));
+                note.files.add(MisskeyFile.fromJSON(filesArray.getJSONObject(i)));
             }
         }
+    }
 
-        // Reacciones (pueden ser Unicode o custom emojis :nombre:)
+    private static void parseReactions(JSONObject json, MisskeyNoteTimeline note) throws JSONException {
         JSONObject reactionsJson = json.optJSONObject("reactions");
         if (reactionsJson != null) {
             note.reactions = new HashMap<>();
             Iterator<String> keys = reactionsJson.keys();
             while (keys.hasNext()) {
-                String reaction = keys.next(); // Puede ser "❤️" o ":blob_cat:"
+                String reaction = keys.next();
                 int count = reactionsJson.getInt(reaction);
                 note.reactions.put(reaction, count);
             }
         }
+    }
 
-        // Lista de emojis custom disponibles en la instancia
+    private static void parseCustomEmojis(JSONObject json, MisskeyNoteTimeline note) throws JSONException {
         JSONArray emojisArray = json.optJSONArray("emojis");
         if (emojisArray != null) {
             note.customEmojis = new HashMap<>();
             for (int i = 0; i < emojisArray.length(); i++) {
                 JSONObject emojiJson = emojisArray.getJSONObject(i);
-                String name = emojiJson.getString("name");
-                String url = emojiJson.getString("url");
-                note.customEmojis.put(name, url);
+                note.customEmojis.put(emojiJson.getString("name"), emojiJson.getString("url"));
             }
         }
+    }
 
-        // Estado de renote
-        note.isRenoted = json.optBoolean("isRenoted", false);
-
-        // Si es un renote
+    private static void parseRenote(JSONObject json, MisskeyNoteTimeline note) {
         JSONObject renoteJson = json.optJSONObject("renote");
         if (renoteJson != null) {
-            note.renote = MisskeyNoteTimeline.fromJSON(renoteJson);
+            Log.d("MisskeyParse", "Parseando renote...");
+            try {
+                note.renote = MisskeyNoteTimeline.fromJSON(renoteJson);
+                Log.d("MisskeyParse", "Renote parseado - Text: " +
+                        (note.renote != null ? note.renote.getText() : "null"));
+            } catch (Exception e) {
+                Log.e("MisskeyParse", "Error parseando renote", e);
+            }
         }
+    }
 
-        // Tags
+    private static void parseTags(JSONObject json, MisskeyNoteTimeline note) throws JSONException {
         JSONArray tagsArray = json.optJSONArray("tags");
         if (tagsArray != null) {
             for (int i = 0; i < tagsArray.length(); i++) {
                 note.tags.add(tagsArray.getString(i));
             }
         }
-
-        return note;
     }
 
     // Getters
@@ -194,7 +210,7 @@ public class MisskeyNoteTimeline extends MisskeyNoteBase {
 
     // Helper para parsear fecha
     private static Date parseDate(String dateStr) {
-        // Misskey usa formato ISO 8601
+        // Misskey usa forma ISO 8601
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
 

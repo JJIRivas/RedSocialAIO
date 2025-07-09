@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><!-- La etiqueta <shape> nos permite definir una forma geométrica -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- <solid> define el color de relleno de la forma.
+         Usa el color que más te guste, este es un rojo/rosa similar al de la imagen. -->
+    <solid android:color="#FF2066" />
+
+    <!-- <corners> es la parte clave: define el redondeo de las esquinas.
+         Un valor alto creará el efecto de "semi-óvalo" o "píldora". -->
+    <corners android:radius="40dp" />
+
+    <!-- (Opcional pero recomendado) <padding> añade espacio interno
+         para que el texto que escribas no se pegue a los bordes de la forma. -->
+    <padding
+        android:left="16dp"
+        android:top="12dp"
+        android:right="16dp"
+        android:bottom="12dp" />
+
+</shape>

@@ -6,11 +6,10 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.redsocialaio.core.checkers.InstancePickerActivity;
 import com.example.redsocialaio.firebase.auth.AccountCreation;
 import com.example.redsocialaio.firebase.auth.AccountLogin;
-import com.example.redsocialaio.firebase.auth.AccountRecovery;
-import com.example.redsocialaio.misskey.validation.MisskeyInstanceInput;
-import com.example.redsocialaio.ui.MissUI;
+import com.example.redsocialaio.ui.Unified.UnifiedTimeline;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -21,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.redsocialaio.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,14 +28,24 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) throws NullPointerException {
         super.onCreate(savedInstanceState);
 
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(this, UnifiedTimeline.class));
+            finish(); // Mata MainActivity para que no vuelva atrás
+            return;
+        }
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        startActivity(new Intent(MainActivity.this, AccountLogin.class));
 
 //        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AccountLogin.class)));
+        binding.appBarMain.fab.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, AccountLogin.class));
+
+        });
 
         TextView create = findViewById(R.id.createAccountButton);
         create.setOnClickListener(v -> {
@@ -43,19 +53,13 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView recover = findViewById(R.id.resetPasswordButton);
         recover.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, MissUI.class));
-        });
-
-        Button button = findViewById(R.id.buttonToAskInstance);
-        button.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, MisskeyInstanceInput.class));
+            startActivity(new Intent(MainActivity.this, UnifiedTimeline.class));
         });
 
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

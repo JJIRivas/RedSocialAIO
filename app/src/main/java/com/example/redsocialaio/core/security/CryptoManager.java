@@ -56,7 +56,7 @@ public class CryptoManager {
         byte[] iv = cipher.getIV();
         byte[] encryption = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 
-        // Combinar IV + datos cifrados
+        // Combinar IV + datos cifrados segun doc en android devs
         byte[] combined = new byte[iv.length + encryption.length];
         System.arraycopy(iv, 0, combined, 0, iv.length);
         System.arraycopy(encryption, 0, combined, iv.length, encryption.length);
@@ -69,7 +69,7 @@ public class CryptoManager {
 
         byte[] combined = Base64.decode(encryptedText, Base64.DEFAULT);
 
-        // Extraer IV (primeros 12 bytes para GCM)
+        // Extraer primeros 12 bytes segun doc en android devs
         byte[] iv = new byte[12];
         byte[] cipherText = new byte[combined.length - 12];
         System.arraycopy(combined, 0, iv, 0, 12);

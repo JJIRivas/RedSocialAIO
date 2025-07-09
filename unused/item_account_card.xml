@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp" android:layout_marginTop="8dp" app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <!-- Usamos ConstraintLayout dentro de la tarjeta para alinear todo fácilmente -->
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:padding="16dp">
+
+        <!-- Icono de la red social (Mastodon, Misskey, etc.) -->
+        <ImageView android:id="@+id/networkIcon" android:layout_width="40dp"
+            android:layout_height="40dp" android:contentDescription="Logo de la red social"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" tools:src="@tools:sample/avatars" />
+
+        <!-- 'tools:src' es un placeholder para que veas algo en el preview -->
+        <!--tools:src="@tools:sample/avatars" />
+
+        <!- Nombre de la Red Social (Ej: "Mastodon") -->
+        <TextView android:id="@+id/networkNameText" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_marginStart="16dp"
+            android:textAppearance="?attr/textAppearanceHeadline6" android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/networkIcon"
+            app:layout_constraintTop_toTopOf="@id/networkIcon"
+            app:layout_constraintEnd_toStartOf="@id/deleteAccountButton"
+
+            tools:text="Mastodon" />
+
+        <!-- Nombre de la instancia (Ej: "mastodon.social") -->
+        <TextView android:id="@+id/instanceUrlText" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintStart_toStartOf="@id/networkNameText"
+            app:layout_constraintTop_toBottomOf="@id/networkNameText"
+            app:layout_constraintEnd_toEndOf="@id/networkNameText"
+
+            tools:text="usuario@mastodon.social" />
+
+        <!-- Botón para eliminar la cuenta -->
+        <ImageButton android:id="@+id/deleteAccountButton" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Eliminar cuenta" android:padding="8dp"
+            app:srcCompat="@android:drawable/ic_delete" app:tint="?android:attr/textColorSecondary"
+
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

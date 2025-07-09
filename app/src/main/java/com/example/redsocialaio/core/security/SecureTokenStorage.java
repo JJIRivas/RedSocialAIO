@@ -28,7 +28,7 @@ public class SecureTokenStorage {
     public SecureTokenStorage(Context context, String networkType) {
         this.networkPrefix = networkType.toLowerCase();
 
-        // Usar instancia compartida de DataStore (singleton)
+        // instancia compartida de DataStore
         this.dataStore = DataStoreHolder.get(context);
 
         try {

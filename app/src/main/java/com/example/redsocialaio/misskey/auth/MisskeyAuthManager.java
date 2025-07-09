@@ -66,43 +66,19 @@ public class MisskeyAuthManager implements AuthManager {
     }
 
 
-    /*Genera el URL para el inicio de sesion/creacion de cuenta como tal, este se arma como un Uri
-    para enviarse al navegador. Sigue la forma https://instancia/miauth/tokenUUid
-    (ej: https://misskey.social/miauth/1234), el resto de los parametros es el nombre de la app,
-    donde retornar una vez listo, y los permisos que se van a pedir. Este URL generado es para el
-    usuario, no deberia retornar nada cuando se ocupa.*/
-
-    /*Con respecto a callbackUrl- este es el "url" que indica a donde regresar luego de completar el
-    proceso... esta definido en el AndroidManifest.xml y retorna el usuario a la clase MisskeyCallbackActivity
-    (por eso el nombre)*/
-
-    /*checkMiAuthSession es el metodo principal de esta clase, el nombre viene porque Misskey puede
-    ocupar otro metodo de verificacion aparte de OAuth, el cual se denomino MiAuth, esta descrito
-    en la documentacion de la API de manera basica, pero para verlo mas a fondo se reviso
-    https://misskey.io/api-doc y https://misskey.social/api-doc - en teoria puede que cada una
-    instancia siga unos endpoints diferentes, pero en practica el 90% de las instancias siguen
-    los endpoints de la instancia principal "Misskey.io" */
-
 
     @Override
     public void handleCallback(String instanceUrl, String sec, AuthCallback callback) {
-        //Primero, revisa si el token temporal  es nulo o no, si es, se retorna a la pantalla anterior.
+
         if (sec == null) {
             callback.onAuthFailed("Sesion no iniciada.");
             return;
         }
 
-        /*Definimos el url que *verifica* si es que el usuario pudo iniciar sesion,
-        donde sigue un orden de https://url/api/miauth/token/check - Este URL *si* deberia retornar
-        informacion, lo mas importante seria el URL de la cuenta del usuario como tal (considerando
-        que el sessionToken es el URL temporal o UUIDToken (misma cosa).*/
+
         String url = "https://" + instanceUrl + "/api/miauth/" + sec + "/check";
         MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
         JSONObject requestBody = new JSONObject();
-
-        /*En la siguiente parte se crea un request con la URL creada (la que termina con /check)
-        en donde en el request se envia un JSON con el unico campo siendo token: UUID para que el
-        API sepa que estamos pidiendo el token de esa cuenta que nos dio permiso como tal.*/
 
         try {
             requestBody.put("token", sec);
@@ -118,10 +94,7 @@ public class MisskeyAuthManager implements AuthManager {
                 .post(body)
                 .build();
 
-        /*Aqui nuevamente se ocupo la tecnica de una interfaz como variable de entrada, en donde
-        se implemento como tal sus metodos en la clase MisskeyCallbackActivity. Notar que estan
-        los metodos de la interfaz Callback (que es una interfaz necesaria por Okhttp), y los
-        metodos de nuestra interfaz MisskeyAuthCallback*/
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -136,8 +109,7 @@ public class MisskeyAuthManager implements AuthManager {
                     return;
                 }
 
-                /*Si lo anterior salio bien, entonces con el Json que se recibio de la llamada
-                tendriamos el token "final" que es como accedemos a la cuenta del usuario.*/
+
                 String responseBody = response.body().string();
                 try {
                     JSONObject json = new JSONObject(responseBody);

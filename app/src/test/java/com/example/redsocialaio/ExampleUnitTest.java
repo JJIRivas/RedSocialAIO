@@ -13,5 +13,8 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+
     }
+
+    /*...Las pruebas unitarias no se implementaron debido a la gran interconectividad con servicios externos y tiempo limitado, sorry!*/
 }

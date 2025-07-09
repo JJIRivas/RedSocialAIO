@@ -36,17 +36,17 @@ public class MissUI extends AppCompatActivity implements MisskeyNoteAdapter.OnNo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_miss_ui);
+        setContentView(R.layout.activity_unified_timeline);
 
-        initViews();
-        setupRecyclerView();
-        setupSwipeRefresh();
-        setupFab();
+//        initViews();
+//        setupRecyclerView();
+//        setupSwipeRefresh();
+//        setupFab();
 
         timelineService = new MisskeyTimelineService(this);
 
         // Cargar primera página
-        loadTimeline(true);
+        // loadTimeline(true);
     }
 
     private void initViews() {

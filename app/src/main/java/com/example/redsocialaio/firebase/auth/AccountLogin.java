@@ -2,12 +2,13 @@ package com.example.redsocialaio.firebase.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.redsocialaio.core.checkers.InstancePickerActivity;
 import com.example.redsocialaio.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +20,7 @@ public class AccountLogin extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText loginMail, loginPassword;
-    private TextView forgotPassword, registerNewUser;
+    private Button forgotPassword, registerNewUser;
     private FloatingActionButton loginButton;
 
     @Override
@@ -50,6 +51,7 @@ public class AccountLogin extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(this, "Login Successful", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this, InstancePickerActivity.class));
                     finish();
                 } else {
                     Toast.makeText(this, "Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();

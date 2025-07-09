@@ -1,158 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:radius="12dp">
+    android:layout_margin="8dp"
+    android:radius="12dp"
+    app:cardCornerRadius="12dp">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/userAvatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_profile"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_profile" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/postUser"
-                    android:text="NombreUsuario"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
+                    android:text="NombreUsuario"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/postInstance"
-                    android:text="instancia.social"
-                    android:textSize="12sp"
-                    android:textColor="#777777"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
+                    android:text="instancia.social"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/postDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Fecha"
-                android:textSize="12sp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
+                android:text="Fecha"
                 android:textAlignment="viewEnd"
-                android:textColor="#777777" />
+                android:textColor="#777777"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/postText"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Texto del post" />
 
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
             android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
             android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:weightSum="5">
 
             <ImageView
                 android:id="@+id/likeButton"
-                android:src="@drawable/ic_like"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/ic_like" />
 
             <TextView
                 android:id="@+id/likeCount"
-                android:text="0"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10sp" />
 
             <ImageView
                 android:id="@+id/replyButton"
-                android:src="@drawable/ic_reply"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/ic_reply" />
 
             <TextView
                 android:id="@+id/replyCount"
-                android:text="0"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10sp" />
 
             <ImageView
                 android:id="@+id/repostButton"
-                android:src="@drawable/ic_repost"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/ic_repost" />
 
             <TextView
                 android:id="@+id/repostCount"
-                android:text="0"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10sp" />
 
             <ImageView
                 android:id="@+id/bookmarkButton"
-                android:src="@drawable/ic_bookmark"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/ic_bookmark" />
 
             <TextView
                 android:id="@+id/bookmarkCount"
-                android:text="0"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10sp" />
 
             <ImageView
                 android:id="@+id/moreButton"
-                android:src="@drawable/ic_more"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/ic_more" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.datastore.preferences.rxjava3)
+    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -60,4 +61,6 @@ dependencies {
     implementation(libs.swiperefreshlayout)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.converter.gson)
 }

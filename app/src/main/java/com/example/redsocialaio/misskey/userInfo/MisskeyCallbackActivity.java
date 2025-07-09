@@ -11,8 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.redsocialaio.core.auth.AuthManager;
-import com.example.redsocialaio.MainActivity;
 import com.example.redsocialaio.misskey.auth.MisskeyAuthManager;
+import com.example.redsocialaio.ui.Unified.UnifiedTimeline;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -80,7 +80,7 @@ public class MisskeyCallbackActivity extends AppCompatActivity {
                                         instanceUrl    // URL de la instancia
                                 ).addOnSuccessListener(aVoid -> {
                                     Toast.makeText(MisskeyCallbackActivity.this, "¡Login exitoso!", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(MisskeyCallbackActivity.this, MainActivity.class));
+                                    startActivity(new Intent(MisskeyCallbackActivity.this, UnifiedTimeline.class));
                                     finish();
                                 }).addOnFailureListener(e -> {
                                     Toast.makeText(MisskeyCallbackActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Usamos un LinearLayout para organizar los elementos verticalmente.
+     El padding es importante para que no se vea todo pegado a los bordes. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="16dp">
+
+    <!-- Un título para que el usuario sepa qué hacer -->
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Crear nuevo post" android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginBottom="16dp" />
+
+    <!-- El campo de texto para escribir el post.
+         gravity="top" asegura que el texto del hint empiece arriba.
+         minLines="3" le da un tamaño inicial razonable. -->
+    <EditText android:id="@+id/composeEditText" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="¿Qué está pasando?"
+        android:inputType="textMultiLine" android:minLines="3" android:gravity="top" />
+
+    <!-- Un contador de caracteres (opcional, pero útil) -->
+    <TextView android:id="@+id/charCountText" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="end" android:text="0/280"
+        android:layout_marginTop="4dp" />
+
+    <!-- El botón para enviar el post.
+         layout_gravity="end" lo alinea a la derecha. -->
+    <Button android:id="@+id/postButton" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="Publicar" android:layout_gravity="end"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

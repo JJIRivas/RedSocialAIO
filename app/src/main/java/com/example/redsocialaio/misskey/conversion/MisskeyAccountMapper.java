@@ -23,6 +23,12 @@ public class MisskeyAccountMapper {
         account.setFollowersCount(json.optLong("followersCount", 0));
         account.setPrivate(json.optBoolean("isPrivate", false));
 
+        // por si el username viene con @
+        String username = account.getUserName();
+        if (username != null && username.startsWith("@")) {
+            account.setUserName(username.substring(1));
+        }
+
         return account;
     }
 
@@ -39,7 +45,7 @@ public class MisskeyAccountMapper {
         data.put("followingCount", account.getFollowingCount());
         data.put("notesCount", account.getPostsCount());
         data.put("isPrivate", account.isPrivate());
-        // NUNCA incluir el token aquí
+        // NUNCA****************** incluir el token aquí
         return data;
     }
 
