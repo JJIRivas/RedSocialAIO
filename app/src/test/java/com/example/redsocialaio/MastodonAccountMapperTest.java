@@ -24,8 +24,8 @@ public class MastodonAccountMapperTest {
 
         String jsonString = "{"
                 + "\"id\": \"12345\","
-                + "\"username\": \"claude\","
-                + "\"display_name\": \"Claude AI\","
+                + "\"username\": \"Juan\","
+                + "\"display_name\": \"JuanJ\","
                 + "\"avatar\": \"http://example.com/avatar.png\","
                 + "\"locked\": true,"
                 + "\"followers_count\": 150,"
@@ -39,8 +39,8 @@ public class MastodonAccountMapperTest {
 
         assertNotNull(account);
         assertEquals("12345", account.getUserID());
-        assertEquals("claude", account.getUserName());
-        assertEquals("Claude AI", account.getDisplayName());
+        assertEquals("Juan", account.getUserName());
+        assertEquals("JuanJ", account.getDisplayName());
         assertEquals("http://example.com/avatar.png", account.getAvatarURL());
         assertTrue(account.isPrivate());
         assertEquals(Optional.of(150L), Optional.of(account.getFollowersCount()));
@@ -87,7 +87,7 @@ public class MastodonAccountMapperTest {
     //Pruebas para fromFirestoreMap
 
     @Test
-    public void fromFirestoreMapOK2() {
+    public void fromFirestoreMapOK() {
         Map<String, Object> firestoreMap = new HashMap<>();
         firestoreMap.put("userID", "firestore-user");
         firestoreMap.put("followersCount", 500L);
