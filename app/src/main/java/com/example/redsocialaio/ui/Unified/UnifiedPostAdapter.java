@@ -119,7 +119,10 @@ public class UnifiedPostAdapter extends RecyclerView.Adapter<UnifiedPostAdapter.
 
     private void quoteTextMisskey(UnifiedPostViewHolder holder, MisskeyNoteTimeline quote, MisskeyNoteTimeline original) {
         String quotedText = quote.getText();
-        if (quotedText == null || quotedText.trim().isEmpty()) return;
+        if (quotedText == null || quotedText.trim().isEmpty()) {
+            holder.postText.setText("💬 ");
+            return;
+        }
 
         String originalText = original.getText() != null ? original.getText() : "";
 
@@ -161,8 +164,10 @@ public class UnifiedPostAdapter extends RecyclerView.Adapter<UnifiedPostAdapter.
 
     private void quotedTextMastodon(UnifiedPostViewHolder holder, MastodonStatusTimeline status, MastodonStatusTimeline original) {
         String quotedText = status.getContent();
-        if (quotedText == null || quotedText.trim().isEmpty()) return;
-
+        if (quotedText == null || quotedText.trim().isEmpty()) {
+            holder.postText.setText("💬 ");
+            return;
+        }
         String originalText = original.getContent() != null ? original.getContent() : "";
 
         if (!originalText.isEmpty()) {

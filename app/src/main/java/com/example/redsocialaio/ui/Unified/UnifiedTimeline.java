@@ -304,7 +304,7 @@ public class UnifiedTimeline extends AppCompatActivity
     }
 
     private void logTimelineDetails(List<UnifiedPost> posts) {
-        Log.d(TAG, "=== DETALLES DEL TIMELINE UNIFICADO ===");
+        Log.d(TAG, " DETALLES DEL TIMELINE UNIFICADO ");
         Log.d(TAG, "Total posts: " + posts.size());
 
         // Mostrar primeros 10 posts con detalles
