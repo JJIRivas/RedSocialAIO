@@ -3,6 +3,7 @@ package com.example.redsocialaio.mastodon;
 import android.util.Log;
 
 import com.example.redsocialaio.core.repositories.SocialAccountInfo;
+import com.example.redsocialaio.exceptions.UnifiedPostException;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -51,10 +52,10 @@ public class MastodonStatusTimeline extends MastodonStatusBase {
         this.tags = new ArrayList<>();
     }
 
-    public static MastodonStatusTimeline fromJSON(JSONObject json) throws JSONException {
+    public static MastodonStatusTimeline fromJSON(JSONObject json) throws JSONException, UnifiedPostException, ParseException {
         MastodonStatusTimeline status = new MastodonStatusTimeline();
 
-        Log.d("I swear if the json is empty.", json.toString());
+
         // Campos básicos
         status.id = json.getString("id");
         status.content = json.optString("content", "");
@@ -201,19 +202,20 @@ public class MastodonStatusTimeline extends MastodonStatusBase {
     }
 
     // Helper para parsear fecha igual que Misskey
-    private static Date parseDate(String dateStr) {
+    private static Date parseDate(String dateStr) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             return format.parse(dateStr);
         } catch (ParseException e) {
+            // Fallback sin milisegundos
             try {
                 SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
                 simpleFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 return simpleFormat.parse(dateStr);
             } catch (ParseException e2) {
-                return new Date();
+                throw new ParseException("No se pudo parsear fecha: " + dateStr, 0);
             }
         }
     }

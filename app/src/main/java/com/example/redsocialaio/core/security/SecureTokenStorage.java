@@ -1,5 +1,6 @@
 package com.example.redsocialaio.core.security;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -44,6 +45,7 @@ public class SecureTokenStorage {
      *
      * @return CompletableFuture para compatibilidad con Java
      */
+    @SuppressLint("CheckResult")
     public CompletableFuture<Void> saveToken(String userId, String token) {
         if (userId == null || token == null) {
             return CompletableFuture.completedFuture(null);
@@ -83,6 +85,7 @@ public class SecureTokenStorage {
     /**
      * Guarda la URL de la instancia
      */
+    @SuppressLint("CheckResult")
     public CompletableFuture<Void> saveInstanceUrl(String userId, String instanceUrl) {
         if (userId == null || instanceUrl == null) {
             return CompletableFuture.completedFuture(null);
@@ -158,6 +161,7 @@ public class SecureTokenStorage {
     /**
      * Versión asíncrona para obtener token (recomendada)
      */
+    @SuppressLint("CheckResult")
     public CompletableFuture<String> getTokenAsync(String userId) {
         if (userId == null) {
             return CompletableFuture.completedFuture(null);
@@ -200,6 +204,7 @@ public class SecureTokenStorage {
     /**
      * Elimina todos los datos del usuario
      */
+    @SuppressLint("CheckResult")
     public CompletableFuture<Void> clearUserData(String userId) {
         if (userId == null) {
             return CompletableFuture.completedFuture(null);
@@ -229,6 +234,7 @@ public class SecureTokenStorage {
     /**
      * Elimina todos los tokens de esta red social
      */
+    @SuppressLint("CheckResult")
     public CompletableFuture<Void> clearAllTokens() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 

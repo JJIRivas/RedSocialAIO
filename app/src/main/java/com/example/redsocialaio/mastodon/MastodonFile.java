@@ -64,6 +64,34 @@ public class MastodonFile {
         return "audio".equals(type);
     }
 
+    public String getBlurhash() {
+        return blurhash;
+    }
+
+    public void setBlurhash(String blurhash) {
+        this.blurhash = blurhash;
+    }
+
+    public String getRemoteUrl() {
+        return remoteUrl;
+    }
+
+    public void setRemoteUrl(String remoteUrl) {
+        this.remoteUrl = remoteUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public boolean hasDescription() {
         return description != null && !description.isEmpty();
     }

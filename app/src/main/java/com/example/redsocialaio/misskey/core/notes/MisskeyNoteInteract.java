@@ -7,6 +7,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.redsocialaio.core.security.SecureTokenStorage;
+import com.example.redsocialaio.exceptions.SocialNetworkApiException;
+import com.example.redsocialaio.exceptions.SocialNetworkAuthException;
 import com.example.redsocialaio.misskey.core.notes.MisskeyNoteTimeline;
 import com.example.redsocialaio.misskey.userInfo.MisskeyAccountService;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +46,15 @@ public class MisskeyNoteInteract {
 
         getAccountInfo().thenAccept(accountInfo -> {
             try {
+
+                if (accountInfo.getToken() == null || accountInfo.getToken().isEmpty()) {
+                    throw new SocialNetworkAuthException(
+                            SocialNetworkAuthException.AuthErrorType.TOKEN_INVALID,
+                            "misskey",
+                            "Token de acceso no encontrado"
+                    );
+                }
+
                 JSONObject body = new JSONObject();
                 body.put("i", accountInfo.getToken()); // TOKEN AQUÍ
                 body.put("noteId", noteId);
@@ -57,8 +68,14 @@ public class MisskeyNoteInteract {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.e(TAG, "Error añadiendo reacción", e);
-                        future.complete(false);
+                        // Crear excepción específica para error de red
+                        SocialNetworkApiException apiException = new SocialNetworkApiException(
+                                SocialNetworkApiException.ApiErrorType.NETWORK_ERROR,
+                                "misskey",
+                                "/api/notes/reactions/create",
+                                e
+                        );
+                        future.completeExceptionally(apiException);
                     }
 
                     @Override
@@ -70,10 +87,24 @@ public class MisskeyNoteInteract {
                 });
 
             } catch (Exception e) {
-                future.completeExceptionally(e);
+                // Excepción genérica convertida a específica
+                SocialNetworkApiException apiException = new SocialNetworkApiException(
+                        SocialNetworkApiException.ApiErrorType.SERVER_ERROR,
+                        "misskey",
+                        "/api/notes/reactions/create",
+                        e
+                );
+                future.completeExceptionally(apiException);
             }
         }).exceptionally(e -> {
-            future.completeExceptionally(e);
+            // Error obteniendo account info
+            SocialNetworkAuthException authException = new SocialNetworkAuthException(
+                    SocialNetworkAuthException.AuthErrorType.TOKEN_INVALID,
+                    "misskey",
+                    "No se pudo obtener información de la cuenta",
+                    e
+            );
+            future.completeExceptionally(authException);
             return null;
         });
 

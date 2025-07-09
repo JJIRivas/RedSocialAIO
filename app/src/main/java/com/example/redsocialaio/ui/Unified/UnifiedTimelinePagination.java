@@ -4,6 +4,9 @@ package com.example.redsocialaio.ui.Unified;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.redsocialaio.exceptions.SocialNetworkApiException;
+import com.example.redsocialaio.exceptions.SocialNetworkAuthException;
+import com.example.redsocialaio.exceptions.UnifiedPostException;
 import com.example.redsocialaio.misskey.core.notes.MisskeyNoteTimeline;
 import com.example.redsocialaio.misskey.core.notes.MisskeyTimelineService;
 import com.example.redsocialaio.mastodon.MastodonStatusTimeline;
@@ -114,7 +117,12 @@ public class UnifiedTimelinePagination {
 
                     } catch (Exception e) {
                         Log.e(TAG, "Error procesando nuevos posts", e);
-                        return 0;
+                        // Manejar errores específicos de procesamiento
+                        if (e.getCause() instanceof UnifiedPostException) {
+                            UnifiedPostException postException = (UnifiedPostException) e.getCause();
+                            Log.e(TAG, "Error procesando posts: " + postException.getUserFriendlyMessage());
+                        }
+                        throw new RuntimeException("Error procesando posts", e);
                     }
                 })
                 .thenAccept(newPostsCount -> {
@@ -172,6 +180,14 @@ public class UnifiedTimelinePagination {
                 .exceptionally(e -> {
                     Log.w(TAG, "Error cargando más posts de Misskey", e);
                     hasMoreMisskey = false; // Desactivar Misskey si falla
+
+                    // Convertir excepciones específicas si es necesario
+                    if (e.getCause() instanceof SocialNetworkAuthException ||
+                            e.getCause() instanceof SocialNetworkApiException) {
+                        // Re-lanzar excepciones específicas
+                        throw new RuntimeException(e.getCause());
+                    }
+
                     return new ArrayList<>();
                 });
     }
@@ -208,6 +224,13 @@ public class UnifiedTimelinePagination {
                 .exceptionally(e -> {
                     Log.w(TAG, "Error cargando más posts de Mastodon", e);
                     hasMoreMastodon = false; // Desactivar Mastodon si falla
+
+                    if (e.getCause() instanceof SocialNetworkAuthException ||
+                            e.getCause() instanceof SocialNetworkApiException) {
+                        // Re-lanzar excepciones específicas
+                        throw new RuntimeException(e.getCause());
+                    }
+
                     return new ArrayList<>();
                 });
     }
