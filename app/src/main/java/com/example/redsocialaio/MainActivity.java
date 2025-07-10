@@ -36,25 +36,26 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, UnifiedTimeline.class));
             finish(); // Mata MainActivity para que no vuelva atrás
             return;
+        } else {
+            startActivity(new Intent(MainActivity.this, AccountLogin.class));
         }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        startActivity(new Intent(MainActivity.this, AccountLogin.class));
 
-//        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, AccountLogin.class));
+////        setSupportActionBar(binding.appBarMain.toolbar);
+//        binding.appBarMain.fab.setOnClickListener(view -> {
+//            startActivity(new Intent(MainActivity.this, AccountLogin.class));
+//
+//        });
 
-        });
-
-        TextView create = findViewById(R.id.createAccountButton);
-        create.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AccountCreation.class));
-        });
-        TextView recover = findViewById(R.id.resetPasswordButton);
-        recover.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, UnifiedTimeline.class));
-        });
+//        TextView create = findViewById(R.id.createAccountButton);
+//        create.setOnClickListener(v -> {
+//            startActivity(new Intent(MainActivity.this, AccountCreation.class));
+//        });
+//        TextView recover = findViewById(R.id.resetPasswordButton);
+//        recover.setOnClickListener(v -> {
+//            startActivity(new Intent(MainActivity.this, UnifiedTimeline.class));
+//        });
 
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -64,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+//        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     @Override
